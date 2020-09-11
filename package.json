@@ -1,0 +1,12 @@
+{
+  "engines": {
+    "node": ">=14.5.0"
+  },
+  "name": "carousel",
+  "version": "1.0.0",
+  "description": "Front modular carousel",
+  "main": "build/index.js",
+  "repository": "https://github.com/Yggdragstyle/carousel.git",
+  "author": "Yggdragstyle <dans_la_com@yahoo.fr>",
+  "license": "MIT"
+}
