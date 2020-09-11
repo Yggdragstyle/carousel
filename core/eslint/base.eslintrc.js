@@ -5,5 +5,6 @@ module.exports = {
   rules: {
     prettier: true,
     'space-before-function-paren': 'always',
+    'no-eval': 'error',
   },
 }

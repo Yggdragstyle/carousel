@@ -11,6 +11,14 @@ function relativeTo(relativePath) {
   return path.resolve(__dirname, '../', relativePath)
 }
 
+// Mode of building
+const env = /dev/.test(String(process.env.NODE_ENV)) ? 'development' : 'production'
+const isProd = env === 'production'
+const isDev = !isProd
+
 module.exports = {
   relativeTo,
+  env,
+  isProd,
+  isDev,
 }

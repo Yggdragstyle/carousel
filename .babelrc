@@ -4,6 +4,13 @@
     "@babel/proposal-class-properties",
     "@babel/plugin-syntax-dynamic-import",
     "babel-plugin-transform-async-to-promises",
-    "@babel/proposal-object-rest-spread"
+    "@babel/proposal-object-rest-spread",
+    [
+      "module-resolver",
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "root": ["./src"]
+      }
+    ]
   ]
 }
