@@ -1,7 +1,6 @@
 import './app.css'
-import '../../dist'
+import { Carousel } from '../../dist'
 
-// Import with ES6 module
-// import { Carousel } from '../../dist'
+window.Carousel = Carousel
 
 console.log('\n\nThis is a DEMO of carousel\n\n')

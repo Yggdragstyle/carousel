@@ -20,7 +20,7 @@ const config = {
     file: 'dist/index.js',
     name: 'Carousel',
     // TODO: choose between iife or es
-    format: 'iife',
+    format: 'es',
   },
   // TODO: prefere runtime to bundle for library ?
   plugins: [

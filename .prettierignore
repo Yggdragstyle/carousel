@@ -1,0 +1,5 @@
+# make sure include this folders
+.cache/
+node_modules/
+public/build/
+

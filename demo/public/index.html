@@ -12,15 +12,26 @@
       <h1>Carousel Demo</h1>
 
       <div id="first_carousel" class="carousel">
-        <div id="slide-1" class="slide">
-          <!-- #slide-1.slide>img[src="https://picsum.photos/id/1$$/200/300"]*6 -->
-          <img src="https://picsum.photos/id/101/200/300" alt="" />
-          <img src="https://picsum.photos/id/102/200/300" alt="" />
-          <img src="https://picsum.photos/id/103/200/300" alt="" />
-          <img src="https://picsum.photos/id/104/200/300" alt="" />
-          <img src="https://picsum.photos/id/107/200/300" alt="" />
-          <img src="https://picsum.photos/id/106/200/300" alt="" />
-        </div>
+        <!-- (#slide-$.slide>img.carousel-slide[src="https://picsum.photos/id/1$$/200/300"])*6 -->
+        <img class="carousel-slide" src="https://picsum.photos/id/101/200/300" alt="" />
+        <img class="carousel-slide" src="https://picsum.photos/id/102/200/300" alt="" />
+        <img class="carousel-slide" src="https://picsum.photos/id/103/200/300" alt="" />
+        <img class="carousel-slide" src="https://picsum.photos/id/104/200/300" alt="" />
+        <img class="carousel-slide" src="https://picsum.photos/id/107/200/300" alt="" />
+        <img class="carousel-slide" src="https://picsum.photos/id/106/200/300" alt="" />
+      </div>
+
+      <div id="second_carousel" class="carousel">
+        <img class="slide" src="https://picsum.photos/id/101/200/300" alt="" />
+        <img class="slide" src="https://picsum.photos/id/102/200/300" alt="" />
+        <img class="slide" src="https://picsum.photos/id/103/200/300" alt="" />
+        <img class="slide" src="https://picsum.photos/id/104/200/300" alt="" />
+        <img class="slide" src="https://picsum.photos/id/107/200/300" alt="" />
+        <img class="slide" src="https://picsum.photos/id/106/200/300" alt="" />
+      </div>
+
+      <div id="empty_carousel" class="carousel">
+        <div id="slide-1" class="carousel-slide"></div>
       </div>
     </div>
   </body>
