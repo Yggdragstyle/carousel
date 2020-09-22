@@ -1,10 +1,5 @@
-var Carousel = (function (exports) {
+(function () {
   'use strict';
-
-  console.log('TEST');
-  var test = {
-    name: 'toto'
-  };
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -58,7 +53,9 @@ var Carousel = (function (exports) {
 
     _createClass(Carousel, [{
       key: "Enable",
-      value: function Enable() {}
+      value: function Enable() {
+        this.$container.dataset.carouselEnable = true;
+      }
     }, {
       key: "Disable",
       value: function Disable() {}
@@ -84,11 +81,7 @@ var Carousel = (function (exports) {
 
   var _console = console,
       log = _console.log;
-  log('Hello World !', test.name);
-  eval('console.log("TOTO")');
+  log('Hello World !', name);
+  new Carousel(document.querySelector('#first_carousel')).Enable(); // export Carousel
 
-  exports.Carousel = Carousel;
-
-  return exports;
-
-}({}));
+}());

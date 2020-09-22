@@ -10,7 +10,9 @@ export class Carousel {
   // M U T T A T O R S
 
   // M E T H O D S
-  Enable() {}
+  Enable() {
+    this.$container.dataset.carouselEnable = true
+  }
   Disable() {}
 
   Play() {}

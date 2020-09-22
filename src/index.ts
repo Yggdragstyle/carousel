@@ -1,4 +1,7 @@
+import { Carousel } from './Carousel'
 const { log } = console
 log('Hello World !', name)
 
-export { Carousel } from './Carousel'
+new Carousel(document.querySelector('#first_carousel')).Enable()
+
+// export Carousel

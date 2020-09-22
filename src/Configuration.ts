@@ -1,6 +1,7 @@
 type TAutoplay = number | false
 
 export class Configuration {
+  //
   private _autoplay: TAutoplay
   private _id: string
   private _loop: boolean

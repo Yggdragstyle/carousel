@@ -1,7 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const path = require('path')
-const port = 3000
+const port = process.env.LOCAL_DEMO_PORT || 3000
 
 app.use('/assets', express.static(path.join(__dirname + '/../public/build')))
 app.get('/favicon.ico', (req, res) => {
