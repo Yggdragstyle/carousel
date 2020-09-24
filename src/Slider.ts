@@ -1,7 +1,9 @@
 import { Slide } from './Slide'
+import { Configuration } from './Configuration'
 
 export class Slider extends Array<Slide> {
   // P R O P E R T I E S
+  private _conf: Configuration
 
   // C O N S T R U C T O R
   constructor(...$items: HTMLElement[]) {
@@ -20,6 +22,14 @@ export class Slider extends Array<Slide> {
 
   get lastIndex() {
     return this.length - 1
+  }
+
+  get conf(): Configuration {
+    return this._conf
+  }
+  set conf(conf: Configuration) {
+    this.conf
+    this.forEach((slide) => (slide.conf = conf))
   }
   // M E T H O D S
 }

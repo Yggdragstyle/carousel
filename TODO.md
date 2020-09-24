@@ -2,6 +2,8 @@
 
 ## TODO :
 
+- Include a true Gitflow (and add it into Contributing)
+
 - Improve Cypress code splitting (with variable, functions and hook)
 
 - Rollup export sereval Carousel version
@@ -15,6 +17,7 @@
   - other (Angular, Svelte, Polymer, etc.)
 
 - Write TDD
+
   - Active
     - Next
     - Prev
@@ -38,6 +41,8 @@
   - Destroy
   - Accessibility (aria role)
     - Slide interactive children => set tabindex
+
+- Add Github pipelines with badges
 
 ## DONE :
 

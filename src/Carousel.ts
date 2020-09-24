@@ -1,5 +1,7 @@
 import { Slider } from './Slider'
-import { isNotHTMLElement, elmtHasCarousel, isHTMLElement, isNumber } from './utils'
+import { isNotHTMLElement, elmtHasCarousel, isHTMLElement } from './utils'
+import { Configuration } from './Configuration'
+import { IConfiguration } from './IConfiguration'
 
 export class Carousel {
   // S T A T I C S
@@ -13,17 +15,24 @@ export class Carousel {
   $container: HTMLElement
   slider: Slider
   private active_index: number
+  conf: Configuration
 
   // C O N S T R U C T O R
-  constructor($container: HTMLElement) {
+  /**
+   * @param $container HTML container of Carousel
+   * @param conf Optional configuration object for setup the Carousel
+   */
+  constructor($container: HTMLElement, conf: IConfiguration = {}) {
     if (isNotHTMLElement($container)) throw new Error('Element container for Carousel must be a HTML Element')
     if (elmtHasCarousel($container)) throw new Error(`Element: ${$container} can've only one Carousel attached`)
-
     this.$container = $container
 
-    const slides: HTMLElement[] = Array.from(this.$container.querySelectorAll('.carousel-slide'))
+    this.conf = new Configuration(conf)
+
+    const slides: HTMLElement[] = Array.from(this.$container.querySelectorAll(this.conf.getQuerySelector('slide')))
     if (0 === slides.filter(isHTMLElement).length) throw new Error('Carousel must contain at least one slide')
     this.slider = new Slider(...slides)
+    this.slider.conf = this.conf
 
     // Keep instance in static
     Carousel._instances.push(this)
@@ -53,12 +62,12 @@ export class Carousel {
   // M E T H O D S
   Enable() {
     this.isEnable = true
-    this.$container.dataset.carouselEnable = 'true'
+    this.conf.toggleSelectorValue(this.$container, 'enable', true)
     this.activeIndex = 0
   }
   Disable() {
     this.isEnable = false
-    this.$container.removeAttribute('data-carousel-enable')
+    this.conf.toggleSelectorValue(this.$container, 'enable', false)
     this.slider.forEach((slide) => slide.Reset())
   }
 

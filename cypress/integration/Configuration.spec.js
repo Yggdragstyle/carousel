@@ -42,9 +42,9 @@ context('Configuration of Carousel', () => {
           },
         }
 
-        new Carousel(document.querySelector('#first_carousel'), conf)
+        new Carousel(document.querySelector('#first_carousel'), conf).Enable()
       })
-      cy.get('#first_carousel').should('have.class', 'enable').and('not.have.attr', 'data-carousel-enable')
+      cy.get('#first_carousel').should('have.class', 'enable') //.and('not.have.attr', 'data-carousel-enable')
     })
 
     it('Hidden Slides must use hidden classname instead hidden attribute', () => {
@@ -55,18 +55,18 @@ context('Configuration of Carousel', () => {
               hidden: { type: 'classname', value: 'hidden' },
             },
           }
-          const carousel = new Carousel(document.querySelector('#first_carousel'))
+          const carousel = new Carousel(document.querySelector('#first_carousel'), conf)
           carousel.Enable()
           return document
         })
         .should((document) => {
-          const slides = Array.from(document.querySelectorAll('#first_carousel .carousel-slide'))
-          expect(slides.every((slide) => !slide.hidden)).to.equal(true)
-          return document
+          const { length } = document.querySelectorAll('#first_carousel .carousel-slide.hidden')
+          expect(length).to.equal(5)
         })
-
-      // TODO: Use and because this line is not handled (I think ?)
-      cy.get('#first_carousel .carousel-slide:not(:first-of-type)').should('have.class', 'hidden')
+        .and((document) => {
+          const { length } = document.querySelectorAll('#first_carousel .carousel-slide[hidden]')
+          expect(length).to.equal(0)
+        })
     })
   })
 })

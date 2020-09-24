@@ -5,14 +5,14 @@ export function elmtHasCarousel($element: HTMLElement): boolean {
   return 0 < arr.length
 }
 
-export function isHTMLElement($element: HTMLElement): boolean {
+export function isHTMLElement($element: any): boolean {
   return !!$element && $element instanceof HTMLElement
 }
 
-export function isNotHTMLElement($element: HTMLElement): boolean {
+export function isNotHTMLElement($element: any): boolean {
   return false === isHTMLElement($element)
 }
 
-export function isNumber(num: number): boolean {
-  return !!num && 'number' === typeof this.active_index
-}
+// export function isNumber(num: any): boolean {
+//   return !!num && 'number' === typeof num
+// }

@@ -1,6 +1,9 @@
+import { Configuration } from './Configuration'
+
 export class Slide {
   // P R O P E R T I E S
   $slide: HTMLElement
+  conf: Configuration
 
   // C O N S T R U C T O R
   constructor($slide: HTMLElement) {
@@ -11,17 +14,17 @@ export class Slide {
 
   // M E T H O D S
   Reset() {
-    this.$slide.hidden = false
-    this.$slide.classList.remove('active')
+    this.conf.toggleSelectorValue(this.$slide, 'hidden', false)
+    this.conf.toggleSelectorValue(this.$slide, 'active', false)
   }
 
   Display() {
-    this.$slide.hidden = false
-    this.$slide.classList.add('active')
+    this.conf.toggleSelectorValue(this.$slide, 'hidden', false)
+    this.conf.toggleSelectorValue(this.$slide, 'active', true)
   }
 
   Hide() {
-    this.$slide.hidden = true
-    this.$slide.classList.remove('active')
+    this.conf.toggleSelectorValue(this.$slide, 'hidden', true)
+    this.conf.toggleSelectorValue(this.$slide, 'active', false)
   }
 }
