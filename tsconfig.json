@@ -18,5 +18,12 @@
     "esModuleInterop": true,
     "experimentalDecorators": false,
     "emitDecoratorMetadata": false
+  },
+  "typedocOptions": {
+    "inputFiles": ["./src"],
+    "mode": "library",
+    "out": "docs",
+    "theme": "default",
+    "includeVersion": true
   }
 }
