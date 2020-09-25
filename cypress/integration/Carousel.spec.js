@@ -1,21 +1,12 @@
-const port = Cypress.env('LOCAL_DEMO_PORT') || 3000
-
 context('Carousel component', () => {
-  beforeEach(() => {
-    cy.log(`Go to on : "http://localhost:${port}"`)
-    cy.visit(`http://localhost:${port}`)
-  })
+  beforeEach(() => cy.visitDemo())
 
   // Constructor
   describe('Constructor', () => {
     it('Carousel must have 6 slides', () => {
-      cy.window()
-        .then(({ Carousel, document }) => {
-          return new Carousel(document.querySelector('#first_carousel'))
-        })
-        .should((carousel) => {
-          expect(carousel.length).to.equal(6)
-        })
+      cy.getCarousel().should(({ carousel }) => {
+        expect(carousel.length).to.equal(6)
+      })
     })
     it('Carousel must throw an Error when doesnt contain slide', () => {
       cy.window()
@@ -62,10 +53,9 @@ context('Carousel component', () => {
   // Enable
   describe('Enable', () => {
     it('Carousel must have data-carousel-enable property', () => {
-      cy.window().then(({ Carousel, document }) => {
-        new Carousel(document.querySelector('#first_carousel')).Enable()
-      })
-
+      cy.getCarousel().applyMethod(['Enable'])
+      // TODO: test if and() receive the attribute value or jQuery elmt
+      // and(eq, true) is not necessary ?
       cy.get('#first_carousel').should('have.attr', 'data-carousel-enable').and('eq', 'true')
     })
   })
@@ -73,37 +63,17 @@ context('Carousel component', () => {
   // Disable
   describe('Disable', () => {
     it('Carousel doesnt have data-carousel-enable property', () => {
-      cy.window().then(({ Carousel, document }) => {
-        const carousel = new Carousel(document.querySelector('#first_carousel'))
-        carousel.Enable()
-        carousel.Disable()
-      })
-
-      cy.get('#first_carousel').should('not.have.attr', 'data-carousel-enable')
+      cy.getCarousel().applyMethod(['Enable'], ['Disable'])
+      cy.get('#first_carousel').notHaveAttribute('data-carousel-enable')
     })
 
-    it('All slides must be visibles', () => {
-      cy.window()
-        .then(({ Carousel, document }) => {
-          const carousel = new Carousel(document.querySelector('#first_carousel'))
-          carousel.Enable()
-          carousel.Disable()
-
-          return document
-        })
-        .should((document) => {
-          const slides = Array.from(document.querySelectorAll('#first_carousel .carousel-slide'))
-          expect(slides.every((slide) => !slide.hidden)).to.equal(true)
-        })
+    it('All slides must doesnt have hidden attribute', () => {
+      cy.getCarousel().applyMethod(['Enable'], ['Disable'])
+      cy.get('#first_carousel .carousel-slide[hidden]').should('have.length', 0)
     })
 
     it('All slides must doesnt have active class name', () => {
-      cy.window().then(({ Carousel, document }) => {
-        const carousel = new Carousel(document.querySelector('#first_carousel'))
-        carousel.Enable()
-        carousel.Disable()
-      })
-
+      cy.getCarousel().applyMethod(['Enable'], ['Disable'])
       cy.get('#first_carousel .carousel-slide').should('not.have.class', 'active')
     })
   })
@@ -111,13 +81,17 @@ context('Carousel component', () => {
   // Disable
   describe('Destroy', () => {
     it('Carousel doesnt have data-carousel-enable property', () => {
-      cy.window().then(({ Carousel, document }) => {
-        const carousel = new Carousel(document.querySelector('#first_carousel'))
-        carousel.Enable()
-        carousel.Destroy()
-      })
+      cy.getCarousel().applyMethod(['Enable'], ['Destroy'])
+      cy.get('#first_carousel').notHaveAttribute('data-carousel-enable')
+    })
 
-      cy.get('#first_carousel').should('not.have.attr', 'data-carousel-enable')
+    it('Carousel instance must be deleted from static Carousels Mapping', () => {
+      cy.getCarousel()
+        .applyMethod(['Destroy'])
+        .should(({ window }) => {
+          const { length } = window.Carousel.instances
+          expect(length).to.eq(0)
+        })
     })
   })
 })

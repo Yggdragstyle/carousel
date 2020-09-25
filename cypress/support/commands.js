@@ -1,3 +1,4 @@
+const port = Cypress.env('LOCAL_DEMO_PORT') || 3000
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -23,3 +24,32 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('visitDemo', () => {
+  cy.log(`Go to on : "http://localhost:${port}"`)
+  cy.visit(`http://localhost:${port}`)
+})
+
+Cypress.Commands.add('getCarousel', (selector = '#first_carousel', configuration = {}) => {
+  return cy.window().then((window) => ({
+    window,
+    carousel: new window.Carousel(window.document.querySelector(selector), configuration),
+  }))
+})
+
+Cypress.Commands.add('applyMethod', { prevSubject: true }, (wrap, ...methods) => {
+  methods.forEach(([method, ...args]) => {
+    wrap.carousel[method](...args)
+  })
+
+  return wrap
+})
+
+Cypress.Commands.add('indexShouldEqual', { prevSubject: true }, ({ carousel }, expected) => {
+  expect(carousel.activeIndex).to.equal(expected)
+})
+
+Cypress.Commands.add('notHaveAttribute', { prevSubject: true }, ($elmts, attributeName) => {
+  const hasNotAttribute = $elmts.toArray().every(($elmt) => false === $elmt.hasAttribute(attributeName))
+  expect(hasNotAttribute).to.equal(true)
+})

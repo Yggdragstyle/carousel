@@ -8,21 +8,49 @@ const default_selectors = {
   hidden: { type: 'attr', value: 'hidden' },
 } as ISelectors
 
-const default_setups = {} as ISetups
+const default_setups = {
+  loop: false,
+} as ISetups
 
 const default_controls = {} as IControls
 
+/**
+ * Configuration of Carousel
+ */
 export class Configuration implements IConfiguration {
   selectors: ISelectors
   setups: ISetups
   controls: IControls
+  $container: HTMLElement
 
-  constructor({ selectors = {}, setups = {}, controls = {} }: IConfiguration) {
+  /**
+   *
+   * @param configuration Object configuration for Carousel
+   * @param $container HTML container of carousel - using for extract data attributes driven this carousel
+   */
+  constructor({ selectors = {}, setups = {}, controls = {} }: IConfiguration, $container: HTMLElement) {
+    this.$container = $container
+    // TODO: Check reason of "classname" value in all context for selector (that displayed into toString)
     this.selectors = Object.assign(default_selectors, selectors)
-    this.setups = Object.assign(default_setups, setups)
+    this.setups = Object.assign(default_setups, setups, this.attributesConfiguration)
     this.controls = Object.assign(default_controls, controls)
   }
 
+  /**
+   * Get all driven attribute from HTML component
+   */
+  get attributesConfiguration(): ISetups {
+    const obj: ISetups = {}
+
+    // set attribute value only if it was defined
+    if (this.$container.hasAttribute('data-carousel-loop')) obj.loop = true
+    return obj
+  }
+
+  /**
+   * Get a query from internal selector
+   * @param selector Type of internal selector
+   */
   getQuerySelector(selector: TSelector): string {
     const select: ISelector = this.selectors[selector]
     let query
@@ -46,6 +74,11 @@ export class Configuration implements IConfiguration {
     return query
   }
 
+  /**
+   * Get if element has internal attribute
+   * @param $from HTML element to extract value
+   * @param selector Type of internal selector
+   */
   hasSelectorValue($from: HTMLElement, selector: TSelector): boolean {
     const select: ISelector = this.selectors[selector]
     let value: boolean
@@ -68,6 +101,12 @@ export class Configuration implements IConfiguration {
     return value
   }
 
+  /**
+   *
+   * @param $from HTML element to set new value
+   * @param selector Type of internal selector
+   * @param toggle If value must be set or remove
+   */
   toggleSelectorValue($from: HTMLElement, selector: TSelector, toggle: boolean) {
     const select: ISelector = this.selectors[selector]
     switch (select.type) {
@@ -88,29 +127,16 @@ export class Configuration implements IConfiguration {
     }
   }
 
-  // getSelectorValue($from: HTMLElement, selector: TSelector): string {
-  //   const select: ISelector = this.selectors[selector]
-  //   let value: string
-  //   switch (select.type) {
-  //     case 'classname':
-  //       value = select.value
-  //       break
-
-  //     case 'dataset':
-  //       value = $from.dataset[select.value]
-  //       break
-  //     case 'attr':
-  //       value = $from.getAttribute(select.value)
-  //       break
-
-  //     default:
-  //       throw new Error('Unknow selector type')
-  //   }
-
-  //   return value
-  // }
-
-  // querySelectorAll($from: HTMLElement | Document = document, selector: TSelectors): HTMLElement[] {
-  //   return Array.from($from.querySelectorAll(this.getQuerySelector(selector)))
-  // }
+  toString(): string {
+    return `
+    \n\tSelectors:
+    \n\t\t${Object.entries(this.selectors)
+      .map(([key, prop]): string => `${key} => type: ${prop.type} - value: ${prop.value}`)
+      .join('\n\t\t')}
+    \n\tSetups:
+    \n\t\t${Object.entries(this.setups)
+      .map(([key, prop]) => `${key}: ${String(prop)}`)
+      .join('\n\t\t')}
+    `
+  }
 }

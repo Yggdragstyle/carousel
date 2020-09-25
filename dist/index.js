@@ -169,6 +169,10 @@ function _createSuper(Derived) {
   };
 }
 
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+
 function _toConsumableArray(arr) {
   return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
 }
@@ -177,8 +181,39 @@ function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) return _arrayLikeToArray(arr);
 }
 
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
 function _iterableToArray(iter) {
   if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+function _iterableToArrayLimit(arr, i) {
+  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
 }
 
 function _unsupportedIterableToArray(o, minLen) {
@@ -200,6 +235,10 @@ function _arrayLikeToArray(arr, len) {
 
 function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 var Slide = /*#__PURE__*/function () {
@@ -311,10 +350,15 @@ function isHTMLElement($element) {
 function isNotHTMLElement($element) {
   return false === isHTMLElement($element);
 } // export function isNumber(num: any): boolean {
+//   return !!num && 'number' === typeof num
+// }
 
 function Capitalize(str) {
   return str[0].toUpperCase() + str.slice(1).toLowerCase();
-}
+} // export function PascalCase(str: string): string {
+//   return str.toLowerCase().split('-').map(Capitalize).join('')
+// }
+
 function CamelCase(str) {
   return str.toLowerCase().split('-').map(function (word, index) {
     return 0 === index ? word : Capitalize(word);
@@ -339,10 +383,21 @@ var default_selectors = {
     value: 'hidden'
   }
 };
-var default_setups = {};
+var default_setups = {
+  loop: false
+};
 var default_controls = {};
+/**
+ * Configuration of Carousel
+ */
+
 var Configuration = /*#__PURE__*/function () {
-  function Configuration(_ref) {
+  /**
+   *
+   * @param configuration Object configuration for Carousel
+   * @param $container HTML container of carousel - using for extract data attributes driven this carousel
+   */
+  function Configuration(_ref, $container) {
     var _ref$selectors = _ref.selectors,
         selectors = _ref$selectors === void 0 ? {} : _ref$selectors,
         _ref$setups = _ref.setups,
@@ -358,13 +413,25 @@ var Configuration = /*#__PURE__*/function () {
 
     _defineProperty(this, "controls", void 0);
 
+    _defineProperty(this, "$container", void 0);
+
+    this.$container = $container;
     this.selectors = Object.assign(default_selectors, selectors);
-    this.setups = Object.assign(default_setups, setups);
+    this.setups = Object.assign(default_setups, setups, this.attributesConfiguration);
     this.controls = Object.assign(default_controls, controls);
   }
+  /**
+   * Get all driven attribute from HTML component
+   */
+
 
   _createClass(Configuration, [{
     key: "getQuerySelector",
+
+    /**
+     * Get a query from internal selector
+     * @param selector Type of internal selector
+     */
     value: function getQuerySelector(selector) {
       var select = this.selectors[selector];
       var query;
@@ -388,6 +455,12 @@ var Configuration = /*#__PURE__*/function () {
 
       return query;
     }
+    /**
+     * Get if element has internal attribute
+     * @param $from HTML element to extract value
+     * @param selector Type of internal selector
+     */
+
   }, {
     key: "hasSelectorValue",
     value: function hasSelectorValue($from, selector) {
@@ -413,6 +486,13 @@ var Configuration = /*#__PURE__*/function () {
 
       return value;
     }
+    /**
+     *
+     * @param $from HTML element to set new value
+     * @param selector Type of internal selector
+     * @param toggle If value must be set or remove
+     */
+
   }, {
     key: "toggleSelectorValue",
     value: function toggleSelectorValue($from, selector, toggle) {
@@ -424,7 +504,6 @@ var Configuration = /*#__PURE__*/function () {
           break;
 
         case 'dataset':
-          debugger;
           if (toggle) $from.dataset[CamelCase(select.value)] = 'true';else delete $from.dataset[CamelCase(select.value)];
 
         case 'attr':
@@ -434,28 +513,32 @@ var Configuration = /*#__PURE__*/function () {
         default:
           throw new Error('Unknow selector type');
       }
-    } // getSelectorValue($from: HTMLElement, selector: TSelector): string {
-    //   const select: ISelector = this.selectors[selector]
-    //   let value: string
-    //   switch (select.type) {
-    //     case 'classname':
-    //       value = select.value
-    //       break
-    //     case 'dataset':
-    //       value = $from.dataset[select.value]
-    //       break
-    //     case 'attr':
-    //       value = $from.getAttribute(select.value)
-    //       break
-    //     default:
-    //       throw new Error('Unknow selector type')
-    //   }
-    //   return value
-    // }
-    // querySelectorAll($from: HTMLElement | Document = document, selector: TSelectors): HTMLElement[] {
-    //   return Array.from($from.querySelectorAll(this.getQuerySelector(selector)))
-    // }
+    }
+  }, {
+    key: "toString",
+    value: function toString() {
+      return "\n    \n\tSelectors:\n    \n\t\t".concat(Object.entries(this.selectors).map(function (_ref2) {
+        var _ref3 = _slicedToArray(_ref2, 2),
+            key = _ref3[0],
+            prop = _ref3[1];
 
+        return "".concat(key, " => type: ").concat(prop.type, " - value: ").concat(prop.value);
+      }).join('\n\t\t'), "\n    \n\tSetups:\n    \n\t\t").concat(Object.entries(this.setups).map(function (_ref4) {
+        var _ref5 = _slicedToArray(_ref4, 2),
+            key = _ref5[0],
+            prop = _ref5[1];
+
+        return "".concat(key, ": ").concat(String(prop));
+      }).join('\n\t\t'), "\n    ");
+    }
+  }, {
+    key: "attributesConfiguration",
+    get: function get() {
+      var obj = {}; // set attribute value only if it was defined
+
+      if (this.$container.hasAttribute('data-carousel-loop')) obj.loop = true;
+      return obj;
+    }
   }]);
 
   return Configuration;
@@ -472,6 +555,11 @@ var Carousel = /*#__PURE__*/function () {
   }]);
 
   // C O N S T R U C T O R
+
+  /**
+   * @param $container HTML container of Carousel
+   * @param conf Optional configuration object for setup the Carousel
+   */
   function Carousel($container) {
     var conf = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
@@ -483,14 +571,14 @@ var Carousel = /*#__PURE__*/function () {
 
     _defineProperty(this, "slider", void 0);
 
-    _defineProperty(this, "active_index", void 0);
+    _defineProperty(this, "active_index", 0);
 
     _defineProperty(this, "conf", void 0);
 
     if (isNotHTMLElement($container)) throw new Error('Element container for Carousel must be a HTML Element');
     if (elmtHasCarousel($container)) throw new Error("Element: ".concat($container, " can've only one Carousel attached"));
     this.$container = $container;
-    this.conf = new Configuration(conf); // TODO: create a specific querySelector method from configuration
+    this.conf = new Configuration(conf, $container); // TODO: get default index
 
     var slides = Array.from(this.$container.querySelectorAll(this.conf.getQuerySelector('slide')));
     if (0 === slides.filter(isHTMLElement).length) throw new Error('Carousel must contain at least one slide');
@@ -500,15 +588,36 @@ var Carousel = /*#__PURE__*/function () {
     Carousel._instances.push(this);
   } // M U T T A T O R S
 
+  /**
+   * get number of slide
+   */
+
 
   _createClass(Carousel, [{
+    key: "Actualize",
+
+    /**
+     * Actualize the slider by set active index
+     */
+    value: function Actualize() {
+      this.activeIndex = this.active_index;
+    } // M E T H O D S
+
+    /**
+     * Enable carousel
+     */
+
+  }, {
     key: "Enable",
-    // M E T H O D S
     value: function Enable() {
       this.isEnable = true;
       this.conf.toggleSelectorValue(this.$container, 'enable', true);
-      this.activeIndex = 0;
+      this.Actualize();
     }
+    /**
+     * Disable carousel
+     */
+
   }, {
     key: "Disable",
     value: function Disable() {
@@ -518,34 +627,71 @@ var Carousel = /*#__PURE__*/function () {
         return slide.Reset();
       });
     }
+    /**
+     * Destroy instance and remove all modifications
+     */
+
   }, {
     key: "Destroy",
     value: function Destroy() {
       this.Disable();
       var indexThis = Carousel.instances.indexOf(this);
-      delete Carousel.instances[indexThis];
+      Carousel.instances.splice(indexThis, 1);
     }
+    /**
+     * Launch the slider player
+     */
+
   }, {
     key: "Play",
     value: function Play() {}
+    /**
+     * Pause the slide player
+     */
+
   }, {
     key: "Pause",
     value: function Pause() {}
+    /**
+     * Stop the slider player
+     */
+
   }, {
     key: "Stop",
     value: function Stop() {}
+    /**
+     * Get previous slide
+     * @param offset Number of slide to skip
+     */
+
   }, {
     key: "Prev",
     value: function Prev() {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      this.Goto(this.activeIndex - offset);
+      var index = this.activeIndex - offset; // TODO: Trigger UX action (js event, toggle class/attr ?)
+
+      if (false === this.conf.setups.loop && index < 0) index = 0;
+      this.Goto(index);
     }
+    /**
+     * Get next slide
+     * @param offset Number of slide to skip
+     */
+
   }, {
     key: "Next",
     value: function Next() {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      this.Goto(this.activeIndex + offset);
+      var index = this.activeIndex + offset; // TODO: Trigger UX action (js event, toggle class/attr ?)
+
+      if (false === this.conf.setups.loop && index >= this.length) index = this.slider.lastIndex;
+      this.Goto(index);
     }
+    /**
+     * Go to specific slide
+     * @param index Index of slide can be negative or greater than max (offset was auto calculed)
+     */
+
   }, {
     key: "Goto",
     value: function Goto(index) {
@@ -559,17 +705,32 @@ var Carousel = /*#__PURE__*/function () {
       this.activeIndex = index;
     }
   }, {
+    key: "toString",
+    value: function toString() {
+      return "Carousel: <".concat(this.$container.tagName.toLowerCase(), " id=\"").concat(this.$container.id, "\" class=\"").concat(this.$container.className, "\">\n    \nIs ").concat(this.isEnable ? 'enable' : 'disabled', "\n    \nThe current index is: ").concat(this.activeIndex, " / ").concat(this.slider.lastIndex, "\n    \nThe configuration was:\n    \n").concat(this.conf, "\n    ");
+    }
+  }, {
     key: "length",
     get: function get() {
       return this.slider.length;
     }
+    /**
+     * Get active index of slider
+     */
+
   }, {
     key: "activeIndex",
     get: function get() {
       return this.active_index;
-    },
+    }
+    /**
+     * set the active index
+     * (WARNING) you dont set negative or too much greater index
+     * if you need auto calculate the index for slider, use Goto (that calcute negative offset, etc.)
+     */
+    ,
     set: function set(index) {
-      if (0 > index || index > this.length) throw new Error("Set active index must be between 0 and ".concat(this.length));
+      if (0 > index || index >= this.length) throw new Error("Set active index must be between 0 and ".concat(this.length));
 
       if (this.isEnable) {
         // hide all slides

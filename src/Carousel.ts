@@ -14,7 +14,7 @@ export class Carousel {
   isEnable: boolean = false
   $container: HTMLElement
   slider: Slider
-  private active_index: number
+  private active_index: number = 0
   conf: Configuration
 
   // C O N S T R U C T O R
@@ -27,7 +27,8 @@ export class Carousel {
     if (elmtHasCarousel($container)) throw new Error(`Element: ${$container} can've only one Carousel attached`)
     this.$container = $container
 
-    this.conf = new Configuration(conf)
+    this.conf = new Configuration(conf, $container)
+    // TODO: get default index
 
     const slides: HTMLElement[] = Array.from(this.$container.querySelectorAll(this.conf.getQuerySelector('slide')))
     if (0 === slides.filter(isHTMLElement).length) throw new Error('Carousel must contain at least one slide')
@@ -39,15 +40,27 @@ export class Carousel {
   }
 
   // M U T T A T O R S
+  /**
+   * get number of slide
+   */
   get length(): number {
     return this.slider.length
   }
 
+  /**
+   * Get active index of slider
+   */
   get activeIndex(): number {
     return this.active_index
   }
+
+  /**
+   * set the active index
+   * (WARNING) you dont set negative or too much greater index
+   * if you need auto calculate the index for slider, use Goto (that calcute negative offset, etc.)
+   */
   set activeIndex(index: number) {
-    if (0 > index || index > this.length) throw new Error(`Set active index must be between 0 and ${this.length}`)
+    if (0 > index || index >= this.length) throw new Error(`Set active index must be between 0 and ${this.length}`)
 
     if (this.isEnable) {
       // hide all slides
@@ -59,36 +72,82 @@ export class Carousel {
     this.active_index = index
   }
 
+  /**
+   * Actualize the slider by set active index
+   */
+  Actualize() {
+    this.activeIndex = this.active_index
+  }
+
   // M E T H O D S
+  /**
+   * Enable carousel
+   */
   Enable() {
     this.isEnable = true
     this.conf.toggleSelectorValue(this.$container, 'enable', true)
-    this.activeIndex = 0
+    this.Actualize()
   }
+
+  /**
+   * Disable carousel
+   */
   Disable() {
     this.isEnable = false
     this.conf.toggleSelectorValue(this.$container, 'enable', false)
     this.slider.forEach((slide) => slide.Reset())
   }
 
+  /**
+   * Destroy instance and remove all modifications
+   */
   Destroy() {
     this.Disable()
     const indexThis = Carousel.instances.indexOf(this)
-    delete Carousel.instances[indexThis]
+    Carousel.instances.splice(indexThis, 1)
   }
 
+  /**
+   * Launch the slider player
+   */
   Play() {}
+
+  /**
+   * Pause the slide player
+   */
   Pause() {}
+
+  /**
+   * Stop the slider player
+   */
   Stop() {}
 
+  /**
+   * Get previous slide
+   * @param offset Number of slide to skip
+   */
   Prev(offset: number = 1) {
-    this.Goto(this.activeIndex - offset)
+    let index = this.activeIndex - offset
+    // TODO: Trigger UX action (js event, toggle class/attr ?)
+    if (false === this.conf.setups.loop && index < 0) index = 0
+    this.Goto(index)
   }
 
+  /**
+   * Get next slide
+   * @param offset Number of slide to skip
+   */
   Next(offset: number = 1) {
-    this.Goto(this.activeIndex + offset)
+    let index = this.activeIndex + offset
+    // TODO: Trigger UX action (js event, toggle class/attr ?)
+    if (false === this.conf.setups.loop && index >= this.length) index = this.slider.lastIndex
+    this.Goto(index)
   }
 
+  /**
+   * Go to specific slide
+   * @param index Index of slide can be negative or greater than max (offset was auto calculed)
+   */
   Goto(index: number) {
     if (index >= this.length) index %= this.length
     if (0 > index) {
@@ -96,5 +155,15 @@ export class Carousel {
       if (index === this.length) index = 0
     }
     this.activeIndex = index
+  }
+
+  toString(): string {
+    return `
+    Carousel: <${this.$container.tagName.toLowerCase()} id="${this.$container.id}" class="${this.$container.className}">
+    \nIs ${this.isEnable ? 'enable' : 'disabled'}
+    \nThe current index is: ${this.activeIndex} / ${this.slider.lastIndex}
+    \nThe configuration was:
+    \n${this.conf}
+    `
   }
 }
