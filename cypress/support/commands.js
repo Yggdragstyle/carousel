@@ -49,6 +49,10 @@ Cypress.Commands.add('indexShouldEqual', { prevSubject: true }, ({ carousel }, e
   expect(carousel.activeIndex).to.equal(expected)
 })
 
+Cypress.Commands.add('autoplayShouldEqual', { prevSubject: true }, ({ carousel }, expected) => {
+  expect(carousel.autoplay).to.equal(expected)
+})
+
 Cypress.Commands.add('notHaveAttribute', { prevSubject: true }, ($elmts, attributeName) => {
   const hasNotAttribute = $elmts.toArray().every(($elmt) => false === $elmt.hasAttribute(attributeName))
   expect(hasNotAttribute).to.equal(true)

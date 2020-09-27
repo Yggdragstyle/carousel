@@ -1,5 +1,6 @@
 import { ISelectors, ISelector, TSelector, ISetups, IControls, IConfiguration } from './IConfiguration'
 import { CamelCase } from './utils/string'
+import { getMillisecondOf, isNotNumber } from './utils'
 
 const default_selectors = {
   active: { type: 'classname', value: 'active' },
@@ -10,9 +11,12 @@ const default_selectors = {
 
 const default_setups = {
   loop: false,
+  autoplay: false,
 } as ISetups
 
 const default_controls = {} as IControls
+
+const default_autoplay = 5e3
 
 /**
  * Configuration of Carousel
@@ -32,8 +36,24 @@ export class Configuration implements IConfiguration {
     this.$container = $container
     // TODO: Check reason of "classname" value in all context for selector (that displayed into toString)
     this.selectors = Object.assign(default_selectors, selectors)
-    this.setups = Object.assign(default_setups, setups, this.attributesConfiguration)
+    this.Setups = [default_setups, setups, this.attributesConfiguration]
     this.controls = Object.assign(default_controls, controls)
+  }
+
+  set Setups(values: [ISetups, ISetups, ISetups]) {
+    const obj = Object.assign(...values)
+    for (let key in obj) {
+      switch (key as any) {
+        case 'autoplay':
+          if (obj.autoplay === true) {
+            obj.autoplay = default_autoplay
+          } else if (isNotNumber(obj.autoplay)) {
+            obj.autoplay = false
+          }
+          break
+      }
+    }
+    this.setups = obj
   }
 
   /**
@@ -43,7 +63,22 @@ export class Configuration implements IConfiguration {
     const obj: ISetups = {}
 
     // set attribute value only if it was defined
+    // loop
     if (this.$container.hasAttribute('data-carousel-loop')) obj.loop = true
+
+    // autoplay
+    try {
+      let autoplay = this.$container.dataset.carouselAutoplay
+      if ('' === autoplay || 'true' === autoplay) obj.autoplay = default_autoplay
+      else if ('string' === typeof autoplay) obj.autoplay = getMillisecondOf(autoplay)
+    } catch (err) {
+      console.error(
+        'Impossible to define the autoplay value, please read the documentation or report an issue if necessary',
+        err
+      )
+    }
+
+    // return configuration override
     return obj
   }
 

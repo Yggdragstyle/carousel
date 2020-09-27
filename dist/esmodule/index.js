@@ -349,9 +349,30 @@ function isHTMLElement($element) {
 }
 function isNotHTMLElement($element) {
   return false === isHTMLElement($element);
-} // export function isNumber(num: any): boolean {
-//   return !!num && 'number' === typeof num
-// }
+}
+function isNumber(num) {
+  return !!num && 'number' === typeof num;
+}
+function isNotNumber(num) {
+  return false === isNumber(num);
+}
+/**
+ * Extract string time to Millisecond
+ *
+ * @param val Time value (ex: 4000 = 4e3 = 4s)
+ * @returns Time into number of millisecond
+ */
+
+function getMillisecondOf(str) {
+  if (/e/.test(str)) {
+    var buffer = str.split('e').map(function (v) {
+      return parseInt(v);
+    });
+    return buffer[0] * Math.pow(10, buffer[1]);
+  }
+
+  return parseInt(str.replace(/(s)/, '000'), 10);
+}
 
 function Capitalize(str) {
   return str[0].toUpperCase() + str.slice(1).toLowerCase();
@@ -384,9 +405,11 @@ var default_selectors = {
   }
 };
 var default_setups = {
-  loop: false
+  loop: false,
+  autoplay: false
 };
 var default_controls = {};
+var default_autoplay = 5e3;
 /**
  * Configuration of Carousel
  */
@@ -418,13 +441,9 @@ var Configuration = /*#__PURE__*/function () {
     this.$container = $container; // TODO: Check reason of "classname" value in all context for selector (that displayed into toString)
 
     this.selectors = Object.assign(default_selectors, selectors);
-    this.setups = Object.assign(default_setups, setups, this.attributesConfiguration);
+    this.Setups = [default_setups, setups, this.attributesConfiguration];
     this.controls = Object.assign(default_controls, controls);
   }
-  /**
-   * Get all driven attribute from HTML component
-   */
-
 
   _createClass(Configuration, [{
     key: "getQuerySelector",
@@ -533,11 +552,45 @@ var Configuration = /*#__PURE__*/function () {
       }).join('\n\t\t'), "\n    ");
     }
   }, {
+    key: "Setups",
+    set: function set(values) {
+      var obj = Object.assign.apply(Object, _toConsumableArray(values));
+
+      for (var key in obj) {
+        switch (key) {
+          case 'autoplay':
+            if (obj.autoplay === true) {
+              obj.autoplay = default_autoplay;
+            } else if (isNotNumber(obj.autoplay)) {
+              obj.autoplay = false;
+            }
+
+            break;
+        }
+      }
+
+      this.setups = obj;
+    }
+    /**
+     * Get all driven attribute from HTML component
+     */
+
+  }, {
     key: "attributesConfiguration",
     get: function get() {
       var obj = {}; // set attribute value only if it was defined
+      // loop
 
-      if (this.$container.hasAttribute('data-carousel-loop')) obj.loop = true;
+      if (this.$container.hasAttribute('data-carousel-loop')) obj.loop = true; // autoplay
+
+      try {
+        var autoplay = this.$container.dataset.carouselAutoplay;
+        if ('' === autoplay || 'true' === autoplay) obj.autoplay = default_autoplay;else if ('string' === typeof autoplay) obj.autoplay = getMillisecondOf(autoplay);
+      } catch (err) {
+        console.error('Impossible to define the autoplay value, please read the documentation or report an issue if necessary', err);
+      } // return configuration override
+
+
       return obj;
     }
   }]);
@@ -590,7 +643,7 @@ var Carousel = /*#__PURE__*/function () {
   } // M U T T A T O R S
 
   /**
-   * get number of slide
+   * get autoplay value from configuration
    */
 
 
@@ -671,7 +724,7 @@ var Carousel = /*#__PURE__*/function () {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var index = this.activeIndex - offset; // TODO: Trigger UX action (js event, toggle class/attr ?)
 
-      if (false === this.conf.setups.loop && index < 0) index = 0;
+      if (false === this.loop && index < 0) index = 0;
       this.Goto(index);
     }
     /**
@@ -685,7 +738,7 @@ var Carousel = /*#__PURE__*/function () {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var index = this.activeIndex + offset; // TODO: Trigger UX action (js event, toggle class/attr ?)
 
-      if (false === this.conf.setups.loop && index >= this.length) index = this.slider.lastIndex;
+      if (false === this.loop && index >= this.length) index = this.slider.lastIndex;
       this.Goto(index);
     }
     /**
@@ -710,6 +763,24 @@ var Carousel = /*#__PURE__*/function () {
     value: function toString() {
       return "\n    Carousel: <".concat(this.$container.tagName.toLowerCase(), " id=\"").concat(this.$container.id, "\" class=\"").concat(this.$container.className, "\">\n    \nIs ").concat(this.isEnable ? 'enable' : 'disabled', "\n    \nThe current index is: ").concat(this.activeIndex, " / ").concat(this.slider.lastIndex, "\n    \nThe configuration was:\n    \n").concat(this.conf, "\n    ");
     }
+  }, {
+    key: "autoplay",
+    get: function get() {
+      return this.conf.setups.autoplay;
+    }
+    /**
+     * get loop value from configuration
+     */
+
+  }, {
+    key: "loop",
+    get: function get() {
+      return this.conf.setups.loop;
+    }
+    /**
+     * get number of slide
+     */
+
   }, {
     key: "length",
     get: function get() {

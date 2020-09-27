@@ -41,6 +41,19 @@ export class Carousel {
 
   // M U T T A T O R S
   /**
+   * get autoplay value from configuration
+   */
+  get autoplay(): number | false {
+    return this.conf.setups.autoplay
+  }
+  /**
+   * get loop value from configuration
+   */
+  get loop(): boolean {
+    return this.conf.setups.loop
+  }
+
+  /**
    * get number of slide
    */
   get length(): number {
@@ -129,7 +142,7 @@ export class Carousel {
   Prev(offset: number = 1) {
     let index = this.activeIndex - offset
     // TODO: Trigger UX action (js event, toggle class/attr ?)
-    if (false === this.conf.setups.loop && index < 0) index = 0
+    if (false === this.loop && index < 0) index = 0
     this.Goto(index)
   }
 
@@ -140,7 +153,7 @@ export class Carousel {
   Next(offset: number = 1) {
     let index = this.activeIndex + offset
     // TODO: Trigger UX action (js event, toggle class/attr ?)
-    if (false === this.conf.setups.loop && index >= this.length) index = this.slider.lastIndex
+    if (false === this.loop && index >= this.length) index = this.slider.lastIndex
     this.Goto(index)
   }
 

@@ -17,6 +17,7 @@ export interface ISetups {
   autoplay?: TAutoplay
   loop?: boolean
   id?: string
+  // [Symbol.iterator]?: Iterator<string>
 }
 
 export interface IControls {

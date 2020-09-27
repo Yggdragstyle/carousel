@@ -39,4 +39,31 @@ context('Configuration of Carousel', () => {
       cy.getCarousel('#third_carousel').applyMethod(['Prev', 2]).indexShouldEqual(4)
     })
   })
+
+  // Autoplay
+  describe('Autoplay', () => {
+    it('autoplay must be disabled', () => {
+      cy.getCarousel('#first_carousel').autoplayShouldEqual(false)
+    })
+
+    it('autoplay millisecond value must be equal to 3000', () => {
+      cy.getCarousel('#first_carousel', { setups: { autoplay: 3e3 } }).autoplayShouldEqual(3000)
+    })
+
+    it('The autoplay millisecond value must be equal to 5000', () => {
+      cy.getCarousel('#third_carousel').autoplayShouldEqual(5000)
+    })
+
+    it('The autoplay millisecond value must be equal to 4000', () => {
+      cy.getCarousel('#four_carousel').autoplayShouldEqual(4000)
+    })
+
+    it('The autoplay millisecond value must be equal to 60 000', () => {
+      cy.getCarousel('#five_carousel').autoplayShouldEqual(60_000)
+    })
+
+    it('autoplay millisecond value must be equal to 5000', () => {
+      cy.getCarousel('#first_carousel', { setups: { autoplay: true } }).autoplayShouldEqual(5000)
+    })
+  })
 })

@@ -27,7 +27,10 @@
   - Configuration
     - default values
     - set classname / attribute (with value)
+    - Check conf object given in parametters (an throw specific errors)
+      - Use a Iterator - setter etc. ?
   - Loop
+  - Revert (or direction of autoplay)
   - Auto play
     - Play / Pause / Stop
     - pause over
