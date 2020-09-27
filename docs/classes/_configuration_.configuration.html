@@ -69,6 +69,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Configuration of Carousel</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -96,9 +103,16 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_configuration_.configuration.html#_container" class="tsd-kind-icon">$container</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_configuration_.configuration.html#controls" class="tsd-kind-icon">controls</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_configuration_.configuration.html#selectors" class="tsd-kind-icon">selectors</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_configuration_.configuration.html#setups" class="tsd-kind-icon">setups</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_configuration_.configuration.html#attributesconfiguration" class="tsd-kind-icon">attributes<wbr>Configuration</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -106,6 +120,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_configuration_.configuration.html#getqueryselector" class="tsd-kind-icon">get<wbr>Query<wbr>Selector</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_configuration_.configuration.html#hasselectorvalue" class="tsd-kind-icon">has<wbr>Selector<wbr>Value</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_configuration_.configuration.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_configuration_.configuration.html#toggleselectorvalue" class="tsd-kind-icon">toggle<wbr>Selector<wbr>Value</a></li>
 							</ul>
 						</section>
@@ -118,15 +133,17 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Configuration<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>controls<span class="tsd-signature-symbol">: </span><a href="../interfaces/_iconfiguration_.icontrols.html" class="tsd-signature-type">IControls</a><span class="tsd-signature-symbol">; </span>selectors<span class="tsd-signature-symbol">: </span><a href="../interfaces/_iconfiguration_.iselectors.html" class="tsd-signature-type">ISelectors</a><span class="tsd-signature-symbol">; </span>setups<span class="tsd-signature-symbol">: </span><a href="../interfaces/_iconfiguration_.isetups.html" class="tsd-signature-type">ISetups</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_configuration_.configuration.html" class="tsd-signature-type">Configuration</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Configuration<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>controls<span class="tsd-signature-symbol">: </span><a href="../interfaces/_iconfiguration_.icontrols.html" class="tsd-signature-type">IControls</a><span class="tsd-signature-symbol">; </span>selectors<span class="tsd-signature-symbol">: </span><a href="../interfaces/_iconfiguration_.iselectors.html" class="tsd-signature-type">ISelectors</a><span class="tsd-signature-symbol">; </span>setups<span class="tsd-signature-symbol">: </span><a href="../interfaces/_iconfiguration_.isetups.html" class="tsd-signature-type">ISetups</a><span class="tsd-signature-symbol"> }</span>, $container<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_configuration_.configuration.html" class="tsd-signature-type">Configuration</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/4d6aa21/src/Configuration.ts#L18">src/Configuration.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L24">src/Configuration.ts:24</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -143,6 +160,14 @@
 										</li>
 									</ul>
 								</li>
+								<li>
+									<h5>$container: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>HTML container of carousel - using for extract data attributes driven this carousel</p>
+										</div>
+									</div>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_configuration_.configuration.html" class="tsd-signature-type">Configuration</a></h4>
 						</li>
@@ -152,13 +177,23 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="_container" class="tsd-anchor"></a>
+					<h3>$container</h3>
+					<div class="tsd-signature tsd-kind-icon">$container<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLElement</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L24">src/Configuration.ts:24</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="controls" class="tsd-anchor"></a>
 					<h3>controls</h3>
 					<div class="tsd-signature tsd-kind-icon">controls<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_iconfiguration_.icontrols.html" class="tsd-signature-type">IControls</a></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_iconfiguration_.iconfiguration.html">IConfiguration</a>.<a href="../interfaces/_iconfiguration_.iconfiguration.html#controls">controls</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/4d6aa21/src/Configuration.ts#L18">src/Configuration.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L23">src/Configuration.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -169,7 +204,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_iconfiguration_.iconfiguration.html">IConfiguration</a>.<a href="../interfaces/_iconfiguration_.iconfiguration.html#selectors">selectors</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/4d6aa21/src/Configuration.ts#L16">src/Configuration.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L21">src/Configuration.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,9 +215,34 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/_iconfiguration_.iconfiguration.html">IConfiguration</a>.<a href="../interfaces/_iconfiguration_.iconfiguration.html#setups">setups</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/4d6aa21/src/Configuration.ts#L17">src/Configuration.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L22">src/Configuration.ts:22</a></li>
 						</ul>
 					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="attributesconfiguration" class="tsd-anchor"></a>
+					<h3>attributes<wbr>Configuration</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> attributesConfiguration<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_iconfiguration_.isetups.html" class="tsd-signature-type">ISetups</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L42">src/Configuration.ts:42</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get all driven attribute from HTML component</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_iconfiguration_.isetups.html" class="tsd-signature-type">ISetups</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -197,13 +257,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/4d6aa21/src/Configuration.ts#L26">src/Configuration.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L54">src/Configuration.ts:54</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get a query from internal selector</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>selector: <a href="../modules/_iconfiguration_.html#tselector" class="tsd-signature-type">TSelector</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type of internal selector</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -220,19 +288,47 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/4d6aa21/src/Configuration.ts#L49">src/Configuration.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L82">src/Configuration.ts:82</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get if element has internal attribute</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>$from: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>HTML element to extract value</p>
+									</div>
 								</li>
 								<li>
 									<h5>selector: <a href="../modules/_iconfiguration_.html#tselector" class="tsd-signature-type">TSelector</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type of internal selector</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3>to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L130">src/Configuration.ts:130</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -246,19 +342,30 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/4d6aa21/src/Configuration.ts#L71">src/Configuration.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/Yggdragstyle/carousel/blob/aa4c60d/src/Configuration.ts#L110">src/Configuration.ts:110</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>$from: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>HTML element to set new value</p>
+									</div>
 								</li>
 								<li>
 									<h5>selector: <a href="../modules/_iconfiguration_.html#tselector" class="tsd-signature-type">TSelector</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Type of internal selector</p>
+									</div>
 								</li>
 								<li>
 									<h5>toggle: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If value must be set or remove</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -313,6 +420,9 @@
 								<a href="_configuration_.configuration.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_configuration_.configuration.html#_container" class="tsd-kind-icon">$container</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_configuration_.configuration.html#controls" class="tsd-kind-icon">controls</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -321,11 +431,17 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_configuration_.configuration.html#setups" class="tsd-kind-icon">setups</a>
 							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="_configuration_.configuration.html#attributesconfiguration" class="tsd-kind-icon">attributes<wbr>Configuration</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_configuration_.configuration.html#getqueryselector" class="tsd-kind-icon">get<wbr>Query<wbr>Selector</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_configuration_.configuration.html#hasselectorvalue" class="tsd-kind-icon">has<wbr>Selector<wbr>Value</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_configuration_.configuration.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_configuration_.configuration.html#toggleselectorvalue" class="tsd-kind-icon">toggle<wbr>Selector<wbr>Value</a>

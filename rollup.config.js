@@ -17,7 +17,7 @@ const extensions = ['.js', '.jsx', '.ts', '.tsx']
 const config = {
   input: './src/index.ts',
   output: {
-    file: 'dist/index.js',
+    file: 'dist/esmodule/index.js',
     name: 'Carousel',
     // TODO: choose between iife or es
     format: 'es',

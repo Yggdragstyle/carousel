@@ -1,5 +1,5 @@
 import './app.css'
-import { Carousel } from '../../dist'
+import { Carousel } from '../../dist/esmodule'
 
 window.Carousel = Carousel
 

@@ -415,7 +415,8 @@ var Configuration = /*#__PURE__*/function () {
 
     _defineProperty(this, "$container", void 0);
 
-    this.$container = $container;
+    this.$container = $container; // TODO: Check reason of "classname" value in all context for selector (that displayed into toString)
+
     this.selectors = Object.assign(default_selectors, selectors);
     this.setups = Object.assign(default_setups, setups, this.attributesConfiguration);
     this.controls = Object.assign(default_controls, controls);
@@ -707,7 +708,7 @@ var Carousel = /*#__PURE__*/function () {
   }, {
     key: "toString",
     value: function toString() {
-      return "Carousel: <".concat(this.$container.tagName.toLowerCase(), " id=\"").concat(this.$container.id, "\" class=\"").concat(this.$container.className, "\">\n    \nIs ").concat(this.isEnable ? 'enable' : 'disabled', "\n    \nThe current index is: ").concat(this.activeIndex, " / ").concat(this.slider.lastIndex, "\n    \nThe configuration was:\n    \n").concat(this.conf, "\n    ");
+      return "\n    Carousel: <".concat(this.$container.tagName.toLowerCase(), " id=\"").concat(this.$container.id, "\" class=\"").concat(this.$container.className, "\">\n    \nIs ").concat(this.isEnable ? 'enable' : 'disabled', "\n    \nThe current index is: ").concat(this.activeIndex, " / ").concat(this.slider.lastIndex, "\n    \nThe configuration was:\n    \n").concat(this.conf, "\n    ");
     }
   }, {
     key: "length",

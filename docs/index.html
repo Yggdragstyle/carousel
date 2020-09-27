@@ -72,6 +72,26 @@
 				Modular, light, styleless (without css, but if you need you can pickup the basic demo stylesheet)</p>
 				<p>Use a configurable data attribute or classname for driven your slider.
 				Or, use a basic JS/JSON configuration. (basically, use it for override)</p>
+				<a href="#how-to-use" id="how-to-use" style="color: inherit; text-decoration: none;">
+					<h2>How to use</h2>
+				</a>
+				<a href="#es-module" id="es-module" style="color: inherit; text-decoration: none;">
+					<h3>Es module</h3>
+				</a>
+				<p><em>EcmaScript module</em> was common using with <strong>Webpack</strong> or native <strong>JS</strong> import (into modern navigators)</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { Carousel } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@yggdragstyle/esmodule&#x27;</span>
+<span class="hljs-keyword">const</span> $elmt = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;carousel&#x27;</span>)
+<span class="hljs-keyword">const</span> myCarousel = <span class="hljs-keyword">new</span> Carousel($elmt)</code></pre>
+				<p>You can give a configuration to carousel :</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> configuration = {
+  <span class="hljs-attr">selectors</span>: { <span class="hljs-attr">active</span>: { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;classname&#x27;</span>, <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;visible&#x27;</span> } },
+  <span class="hljs-attr">setups</span>: { <span class="hljs-attr">loop</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">autoplay</span>: <span class="hljs-number">5e3</span> },
+}
+<span class="hljs-keyword">const</span> myCarousel = <span class="hljs-keyword">new</span> Carousel($elmt, configuration)</code></pre>
+				<p>Or simple use a data-attribute (for setups only) :</p>
+				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;carousel&quot;</span> <span class="hljs-attr">data-carousel-loop</span> <span class="hljs-attr">data-carousel-autoplay</span>=<span class="hljs-string">&quot;5s&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;carousel-slide&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
 				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
 					<h2>Contributing</h2>
 				</a>
