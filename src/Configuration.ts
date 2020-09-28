@@ -7,6 +7,8 @@ const default_selectors = {
   slide: { type: 'classname', value: 'carousel-slide' },
   enable: { type: 'dataset', value: 'carousel-enable' },
   hidden: { type: 'attr', value: 'hidden' },
+  after: { type: 'attr', value: 'carousel-slide-after' },
+  before: { type: 'attr', value: 'carousel-slide-before' },
 } as ISelectors
 
 const default_setups = {

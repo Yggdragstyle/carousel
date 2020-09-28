@@ -11,6 +11,8 @@ export interface ISelectors {
   slide?: ISelector
   enable?: ISelector
   hidden?: ISelector
+  after?: ISelector
+  before?: ISelector
 }
 
 export interface ISetups {

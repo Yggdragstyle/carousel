@@ -414,6 +414,14 @@ var default_selectors = {
   hidden: {
     type: 'attr',
     value: 'hidden'
+  },
+  after: {
+    type: 'attr',
+    value: 'carousel-slide-after'
+  },
+  before: {
+    type: 'attr',
+    value: 'carousel-slide-before'
   }
 };
 var default_setups = {
@@ -616,6 +624,11 @@ var Configuration = /*#__PURE__*/function () {
   return Configuration;
 }();
 
+// Sugar test direction of sliding (is more explicite)
+var isAfter = function isAfter(direction) {
+  return direction;
+};
+
 var Carousel = /*#__PURE__*/function () {
   _createClass(Carousel, null, [{
     key: "instances",
@@ -778,13 +791,17 @@ var Carousel = /*#__PURE__*/function () {
   }, {
     key: "Goto",
     value: function Goto(index) {
+      var direction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       if (index >= this.length) index %= this.length;
 
       if (0 > index) {
+        direction = false;
         index = this.length - Math.abs(index) % this.length;
         if (index === this.length) index = 0;
       }
 
+      this.$active.classList.add(this.conf.selectors[isAfter(direction) ? 'before' : 'after'].value);
+      this.slider[index].$slide.classList.add(this.conf.selectors[isAfter(direction) ? 'after' : 'before'].value);
       this.activeIndex = index;
     }
   }, {

@@ -40,6 +40,63 @@ context('Configuration of Carousel', () => {
     })
   })
 
+  // Slide before & after selectors
+  describe('Slide before & after selectors', () => {
+    context('Default value', () => {
+      context('When slide to right', () => {
+        it('The default after selector on ative slide must be "carousel-slide-after"', () => {
+          cy.getCarousel().applyMethod('Enable', 'Next')
+          cy.get('#first_carousel .carousel-slide:nth-child(2)').should('have.class', 'carousel-slide-after')
+        })
+        it('The default before selector on previous ative slide must be "carousel-slide-before"', () => {
+          cy.getCarousel().applyMethod('Enable', 'Next')
+          cy.get('#first_carousel .carousel-slide:nth-child(2)').should('have.class', 'carousel-slide-before')
+        })
+      })
+      context('When slide to left', () => {
+        it('The default before selector on ative slide must be "carousel-slide-before"', () => {
+          cy.getCarousel().applyMethod('Enable', 'Next')
+          cy.get('#first_carousel .carousel-slide:nth-child(2)').should('have.class', 'carousel-slide-before')
+        })
+        it('The default after selector on previous ative slide must be "carousel-slide-after"', () => {
+          cy.getCarousel().applyMethod('Enable', 'Next')
+          cy.get('#first_carousel .carousel-slide:nth-child(2)').should('have.class', 'carousel-slide-after')
+        })
+      })
+    })
+
+    context('Change classname by config object args', () => {
+      context('When slide to right', () => {
+        it('The default after selector on ative slide must be "after"', () => {
+          cy.getCarousel('#first_carousel', {
+            selectors: { after: { type: 'classname', value: 'after' } },
+          }).applyMethod('Enable', 'Next')
+          cy.get('#first_carousel .carousel-slide:nth-child(2)').should('have.class', 'after')
+        })
+        it('The default before selector on previous ative slide must be "before"', () => {
+          cy.getCarousel('#first_carousel', {
+            selectors: { before: { type: 'classname', value: 'before' } },
+          }).applyMethod('Enable', 'Next')
+          cy.get('#first_carousel .carousel-slide:nth-child(2)').should('have.class', 'before')
+        })
+      })
+      context('When slide to left', () => {
+        it('The default before selector on ative slide must be "before"', () => {
+          cy.getCarousel('#first_carousel', {
+            selectors: { before: { type: 'classname', value: 'before' } },
+          }).applyMethod('Enable', 'Next')
+          cy.get('#first_carousel .carousel-slide:nth-child(2)').should('have.class', 'before')
+        })
+        it('The default after selector on previous ative slide must be "after"', () => {
+          cy.getCarousel('#first_carousel', {
+            selectors: { after: { type: 'classname', value: 'after' } },
+          }).applyMethod('Enable', 'Next')
+          cy.get('#first_carousel .carousel-slide:nth-child(2)').should('have.class', 'after')
+        })
+      })
+    })
+  })
+
   // Autoplay
   describe('Autoplay', () => {
     it('autoplay must be disabled', () => {

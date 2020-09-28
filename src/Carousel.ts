@@ -8,6 +8,10 @@ interface IEvent_fn {
   play_interval: () => void | null
 }
 
+// Sugar test direction of sliding (is more explicite)
+const isAfter = (direction: boolean): boolean => direction
+const isBefore = (direction: boolean): boolean => !!direction
+
 export class Carousel {
   // S T A T I C S
   private static _instances: Carousel[] = []
@@ -57,7 +61,7 @@ export class Carousel {
   /**
    * get autoplay value from configuration
    */
-  get autoplay(): number | false {
+  get autoplay(): number | boolean {
     return this.conf.setups.autoplay
   }
   /**
@@ -186,12 +190,18 @@ export class Carousel {
    * Go to specific slide
    * @param index Index of slide can be negative or greater than max (offset was auto calculed)
    */
-  Goto(index: number) {
+  Goto(index: number, direction = true) {
     if (index >= this.length) index %= this.length
     if (0 > index) {
+      direction = false
       index = this.length - (Math.abs(index) % this.length)
       if (index === this.length) index = 0
     }
+
+    // Set direction selector to slide (previous and current)
+    this.$active.classList.add(this.conf.selectors[isAfter(direction) ? 'before' : 'after'].value)
+    this.slider[index].$slide.classList.add(this.conf.selectors[isAfter(direction) ? 'after' : 'before'].value)
+
     this.activeIndex = index
   }
 
