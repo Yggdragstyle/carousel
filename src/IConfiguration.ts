@@ -1,4 +1,4 @@
-export type TAutoplay = number | false
+export type TAutoplay = number | boolean
 export type TSelector = 'active' | 'slide' | 'enable' | 'hidden'
 
 export interface ISelector {

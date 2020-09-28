@@ -1,7 +1,12 @@
 import { Slider } from './Slider'
-import { isNotHTMLElement, elmtHasCarousel, isHTMLElement } from './utils'
+import { isNotHTMLElement, elmtHasCarousel, isHTMLElement, isNotNumber } from './utils'
 import { Configuration } from './Configuration'
 import { IConfiguration } from './IConfiguration'
+import { Slide } from './Slide'
+
+interface IEvent_fn {
+  play_interval: () => void | null
+}
 
 export class Carousel {
   // S T A T I C S
@@ -16,6 +21,11 @@ export class Carousel {
   slider: Slider
   private active_index: number = 0
   conf: Configuration
+
+  // Internals functions stored for remove event listener
+  private _events_fn: IEvent_fn = {
+    play_interval: null,
+  }
 
   // C O N S T R U C T O R
   /**
@@ -40,6 +50,10 @@ export class Carousel {
   }
 
   // M U T T A T O R S
+  get $active(): HTMLElement {
+    return this.slider[this.activeIndex].$slide
+  }
+
   /**
    * get autoplay value from configuration
    */
@@ -83,6 +97,10 @@ export class Carousel {
     }
 
     this.active_index = index
+
+    // Dispatch change event on Carousel
+    var event = new CustomEvent('change', { detail: this })
+    this.$container.dispatchEvent(event)
   }
 
   /**
@@ -100,6 +118,7 @@ export class Carousel {
     this.isEnable = true
     this.conf.toggleSelectorValue(this.$container, 'enable', true)
     this.Actualize()
+    this.Play()
   }
 
   /**
@@ -123,7 +142,13 @@ export class Carousel {
   /**
    * Launch the slider player
    */
-  Play() {}
+  Play() {
+    if (isNotNumber(this.autoplay)) return
+    this._events_fn.play_interval = () => {
+      this.Next()
+    }
+    setInterval(this._events_fn.play_interval, this.autoplay as number)
+  }
 
   /**
    * Pause the slide player

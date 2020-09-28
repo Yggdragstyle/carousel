@@ -1,6 +1,6 @@
 import { ISelectors, ISelector, TSelector, ISetups, IControls, IConfiguration } from './IConfiguration'
 import { CamelCase } from './utils/string'
-import { getMillisecondOf, isNotNumber } from './utils'
+import { getMillisecondOf, isNotNumber, isNumber } from './utils'
 
 const default_selectors = {
   active: { type: 'classname', value: 'active' },
@@ -46,7 +46,13 @@ export class Configuration implements IConfiguration {
       switch (key as any) {
         case 'autoplay':
           if (obj.autoplay === true) {
-            obj.autoplay = default_autoplay
+            // test if manual conf (crushed by data-attr config) has number
+            if (isNumber(values[1].autoplay)) {
+              // Prefere him to default value
+              obj.autoplay = values[1].autoplay
+            } else {
+              obj.autoplay = default_autoplay
+            }
           } else if (isNotNumber(obj.autoplay)) {
             obj.autoplay = false
           }
@@ -69,7 +75,7 @@ export class Configuration implements IConfiguration {
     // autoplay
     try {
       let autoplay = this.$container.dataset.carouselAutoplay
-      if ('' === autoplay || 'true' === autoplay) obj.autoplay = default_autoplay
+      if ('' === autoplay || 'true' === autoplay) obj.autoplay = true
       else if ('string' === typeof autoplay) obj.autoplay = getMillisecondOf(autoplay)
     } catch (err) {
       console.error(

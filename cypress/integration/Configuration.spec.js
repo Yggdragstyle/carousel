@@ -54,6 +54,10 @@ context('Configuration of Carousel', () => {
       cy.getCarousel('#third_carousel').autoplayShouldEqual(5000)
     })
 
+    it('The autoplay millisecond value must be equal to 7000', () => {
+      cy.getCarousel('#third_carousel', { setups: { autoplay: 7e3 } }).autoplayShouldEqual(7000)
+    })
+
     it('The autoplay millisecond value must be equal to 4000', () => {
       cy.getCarousel('#four_carousel').autoplayShouldEqual(4000)
     })

@@ -350,9 +350,21 @@ function isHTMLElement($element) {
 function isNotHTMLElement($element) {
   return false === isHTMLElement($element);
 }
+/**
+ * Test if is a number
+ * @param num value to test
+ * @returns is a number ?
+ */
+
 function isNumber(num) {
   return !!num && 'number' === typeof num;
 }
+/**
+ * Test if is not a number
+ * @param num value to test
+ * @returns is not a number ?
+ */
+
 function isNotNumber(num) {
   return false === isNumber(num);
 }
@@ -560,7 +572,13 @@ var Configuration = /*#__PURE__*/function () {
         switch (key) {
           case 'autoplay':
             if (obj.autoplay === true) {
-              obj.autoplay = default_autoplay;
+              // test if manual conf (crushed by data-attr config) has number
+              if (isNumber(values[1].autoplay)) {
+                // Prefere him to default value
+                obj.autoplay = values[1].autoplay;
+              } else {
+                obj.autoplay = default_autoplay;
+              }
             } else if (isNotNumber(obj.autoplay)) {
               obj.autoplay = false;
             }
@@ -585,7 +603,7 @@ var Configuration = /*#__PURE__*/function () {
 
       try {
         var autoplay = this.$container.dataset.carouselAutoplay;
-        if ('' === autoplay || 'true' === autoplay) obj.autoplay = default_autoplay;else if ('string' === typeof autoplay) obj.autoplay = getMillisecondOf(autoplay);
+        if ('' === autoplay || 'true' === autoplay) obj.autoplay = true;else if ('string' === typeof autoplay) obj.autoplay = getMillisecondOf(autoplay);
       } catch (err) {
         console.error('Impossible to define the autoplay value, please read the documentation or report an issue if necessary', err);
       } // return configuration override
@@ -629,6 +647,10 @@ var Carousel = /*#__PURE__*/function () {
 
     _defineProperty(this, "conf", void 0);
 
+    _defineProperty(this, "_events_fn", {
+      play_interval: null
+    });
+
     if (isNotHTMLElement($container)) throw new Error('Element container for Carousel must be a HTML Element');
     if (elmtHasCarousel($container)) throw new Error("Element: ".concat($container, " can've only one Carousel attached"));
     this.$container = $container;
@@ -641,10 +663,6 @@ var Carousel = /*#__PURE__*/function () {
 
     Carousel._instances.push(this);
   } // M U T T A T O R S
-
-  /**
-   * get autoplay value from configuration
-   */
 
 
   _createClass(Carousel, [{
@@ -667,6 +685,7 @@ var Carousel = /*#__PURE__*/function () {
       this.isEnable = true;
       this.conf.toggleSelectorValue(this.$container, 'enable', true);
       this.Actualize();
+      this.Play();
     }
     /**
      * Disable carousel
@@ -698,7 +717,17 @@ var Carousel = /*#__PURE__*/function () {
 
   }, {
     key: "Play",
-    value: function Play() {}
+    value: function Play() {
+      var _this = this;
+
+      if (isNotNumber(this.autoplay)) return;
+
+      this._events_fn.play_interval = function () {
+        _this.Next();
+      };
+
+      setInterval(this._events_fn.play_interval, this.autoplay);
+    }
     /**
      * Pause the slide player
      */
@@ -764,6 +793,15 @@ var Carousel = /*#__PURE__*/function () {
       return "\n    Carousel: <".concat(this.$container.tagName.toLowerCase(), " id=\"").concat(this.$container.id, "\" class=\"").concat(this.$container.className, "\">\n    \nIs ").concat(this.isEnable ? 'enable' : 'disabled', "\n    \nThe current index is: ").concat(this.activeIndex, " / ").concat(this.slider.lastIndex, "\n    \nThe configuration was:\n    \n").concat(this.conf, "\n    ");
     }
   }, {
+    key: "$active",
+    get: function get() {
+      return this.slider[this.activeIndex].$slide;
+    }
+    /**
+     * get autoplay value from configuration
+     */
+
+  }, {
     key: "autoplay",
     get: function get() {
       return this.conf.setups.autoplay;
@@ -813,7 +851,12 @@ var Carousel = /*#__PURE__*/function () {
         this.slider[index].Display();
       }
 
-      this.active_index = index;
+      this.active_index = index; // Dispatch change event on Carousel
+
+      var event = new CustomEvent('change', {
+        detail: this
+      });
+      this.$container.dispatchEvent(event);
     }
   }]);
 

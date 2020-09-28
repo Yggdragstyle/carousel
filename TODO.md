@@ -47,6 +47,9 @@
 
 - Add Github pipelines with badges
 
+- Polyfills
+  - (CustomEvent)[https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill]
+
 ## DONE :
 
 - Integrate CYPress

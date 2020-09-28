@@ -38,7 +38,15 @@ Cypress.Commands.add('getCarousel', (selector = '#first_carousel', configuration
 })
 
 Cypress.Commands.add('applyMethod', { prevSubject: true }, (wrap, ...methods) => {
-  methods.forEach(([method, ...args]) => {
+  methods.forEach((param) => {
+    let method, args
+    if (Array.isArray(param)) {
+      method = param.shift()
+      args = param
+    } else {
+      method = param
+      args = []
+    }
     wrap.carousel[method](...args)
   })
 
@@ -57,3 +65,7 @@ Cypress.Commands.add('notHaveAttribute', { prevSubject: true }, ($elmts, attribu
   const hasNotAttribute = $elmts.toArray().every(($elmt) => false === $elmt.hasAttribute(attributeName))
   expect(hasNotAttribute).to.equal(true)
 })
+
+// Cypress.Commands.add('shouldEmit', { prevSubject: true }, ($elmts, eventName) => {
+//   $elmts.should.emit(eventName)
+// })

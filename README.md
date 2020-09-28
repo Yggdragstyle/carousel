@@ -41,3 +41,5 @@ Or simple use a data-attribute (for setups only) :
 ## Contributing
 
 Use the .env for local demo server port, (whish is handle by local server and Cypress E2E tests)
+
+Read the (TODO.md)[./TODO.md]
